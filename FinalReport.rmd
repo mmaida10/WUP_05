@@ -23,6 +23,11 @@ A new  preventative aides drug (triUmpsal) is under test in clinical trials. Con
 
 To test the hypothesis, we must make a smaller data frame which only contains the females. We will then analyze this newly created data frame to see if the drugs are effective on women.
 
+```{r}
+girls <- filter(triUmp, gender == "F")
+```
+
+
 # Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
@@ -32,6 +37,23 @@ To test the hypothesis, we must make a smaller data frame which only contains th
 ### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
+
+```{r}
+dd2 <- girls %>% group_by(infected, treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=infected,y=count, fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=infected, y=prcnt*100, fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+The third graph depicts that around 60% of females who tested positive for aids received the drugs, while the other 40% received the placebo. Counter-intuitively, the group who received the placebo tested negative for aids less than the group who received the actual drug. This indicates that the drug is not effective in preventing aids. 
 
 ### Numerical Descriptive Results
 
